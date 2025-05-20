@@ -6,7 +6,7 @@ import { contactData } from '../../../../data/myContactsData';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const personalId = process.env.MOBILENUMBERTEST2;
+const personalId = process.env.PERSONALID;
 const mobileNumberTest1 = process.env.MOBILENUMBERTEST1;
 const mobileNumberTest2 = process.env.MOBILENUMBERTEST2;
 const emailTest1 = process.env.EMAILTEST1;
