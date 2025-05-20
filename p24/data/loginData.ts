@@ -1,8 +1,13 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
+const personalId = process.env.personalId;
+
 export const loginData = {
   validlogin: {
     surname: 'Hansson',
     givenName: 'Alex',
-    nationalPersonalId: '199008292394',
+    nationalPersonalId: personalId,
     personalIdType: 'SWEDISH_PERSONAL_IDENTITY_NUMBER',
   },
 
@@ -27,7 +32,7 @@ export const loginDataSet = [
     data: {
       surname: 'Hansson',
       givenName: 'Alex',
-      nationalPersonalId: '199008292394',
+      nationalPersonalId: personalId,
       personalIdType: 'SWEDISH_PERSONAL_IDENTITY_NUMBER',
     },
     expectedStatus: 200,

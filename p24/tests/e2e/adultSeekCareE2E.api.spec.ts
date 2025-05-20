@@ -1,5 +1,9 @@
 import { test, expect } from '@playwright/test';
+import dotenv from 'dotenv';
+dotenv.config();
 
+const personalId = process.env.personalId;
+const triageInterviewId = process.env.triageInterviewId;
 let authToken: string;
 let pid: string;
 let appoinmentId: string;
@@ -16,7 +20,7 @@ test.describe('Seek care E2E', () => {
       data: {
         surname: 'Hansson',
         givenName: 'Alex',
-        nationalPersonalId: '199305022395',
+        nationalPersonalId: personalId,
         personalIdType: 'SWEDISH_PERSONAL_IDENTITY_NUMBER',
       },
     });
@@ -103,7 +107,7 @@ test.describe('Seek care E2E', () => {
       },
       data: {
         patientId: `${pid}`,
-        triageInterviewId: '9a71c917-0fc5-449a-8755-472d72ce1ef4',
+        triageInterviewId: triageInterviewId,
         type: 'TriageRecommendation',
         isChild: false,
       },

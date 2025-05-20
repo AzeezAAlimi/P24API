@@ -3,7 +3,11 @@ import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import { healthProfileSchema } from '../../../../schemas/healthProfile.schema';
 import { healthProfileData } from '../../../../data/healthProfileData';
+import dotenv from 'dotenv';
+dotenv.config();
 
+const personalId = process.env.personalId;
+const personExternalId = process.env.personExternalId;
 const ajv = new Ajv();
 addFormats(ajv);
 
@@ -21,7 +25,7 @@ test.describe('Positive Testing - Health Profile', () => {
       data: {
         surname: 'Hansson',
         givenName: 'Alex',
-        nationalPersonalId: '199008292394',
+        nationalPersonalId: personalId,
         personalIdType: 'SWEDISH_PERSONAL_IDENTITY_NUMBER',
       },
     });
@@ -41,8 +45,8 @@ test.describe('Positive Testing - Health Profile', () => {
     });
     expect(response.status()).toBe(200);
     const body = await response.json();
-    expect(body.username).toBe('19900829-2394');
-    expect(body.patient.personExternalId).toBe('19900829-2394');
+    expect(body.username).toBe(personExternalId);
+    expect(body.patient.personExternalId).toBe(personExternalId);
     pid = body.patient.id;
   });
 

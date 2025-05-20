@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test';
 import { healthProfileDataSet } from '../../data/healthProfileData';
+import dotenv from 'dotenv';
+dotenv.config();
 
+const personalId = process.env.personalId;
 let authToken: string;
 let pid: string;
 
@@ -15,7 +18,7 @@ test.describe('Data-Driven Testing - Health Profile', () => {
       data: {
         surname: 'Hansson',
         givenName: 'Alex',
-        nationalPersonalId: '199008292394',
+        nationalPersonalId: personalId,
         personalIdType: 'SWEDISH_PERSONAL_IDENTITY_NUMBER',
       },
     });

@@ -3,7 +3,14 @@ import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import { myContactsSchema } from '../../../../schemas/myContacts.schema';
 import { contactData } from '../../../../data/myContactsData';
+import dotenv from 'dotenv';
+dotenv.config();
 
+const personalId = process.env.personalId;
+const mobileNumberTest1 = process.env.mobileNumberTest1;
+const mobileNumberTest2 = process.env.mobileNumberTest2;
+const emailTest1 = process.env.emailTest1;
+const emailTest2 = process.env.emailTest2;
 const ajv = new Ajv();
 addFormats(ajv);
 
@@ -21,7 +28,7 @@ test.describe('Positive Testing - Update my Contacts', () => {
       data: {
         surname: 'Hansson',
         givenName: 'Alex',
-        nationalPersonalId: '199008292394',
+        nationalPersonalId: personalId,
         personalIdType: 'SWEDISH_PERSONAL_IDENTITY_NUMBER',
       },
     });
@@ -69,10 +76,10 @@ test.describe('Positive Testing - Update my Contacts', () => {
     });
     expect(response.status()).toBe(200);
     expect(contactData.validContacts.userContactInformation.email).toBe(
-      'thisisatest@test.com',
+      emailTest1,
     );
     expect(contactData.validContacts.userContactInformation.mobileNumber).toBe(
-      '+4612333657',
+      mobileNumberTest1,
     );
   });
 
@@ -88,10 +95,10 @@ test.describe('Positive Testing - Update my Contacts', () => {
     });
     expect(response.status()).toBe(200);
     expect(contactData.resetContacts.userContactInformation.email).toBe(
-      'hellomyfriend@test.com',
+      emailTest2,
     );
     expect(contactData.resetContacts.userContactInformation.mobileNumber).toBe(
-      '+4688888888',
+      mobileNumberTest2,
     );
   });
 });

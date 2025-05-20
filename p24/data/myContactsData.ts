@@ -1,15 +1,22 @@
+import dotenv from 'dotenv';
+dotenv.config();
+const mobileNumberTest1 = process.env.mobileNumberTest1;
+const mobileNumberTest2 = process.env.mobileNumberTest2;
+const emailTest1 = process.env.emailTest1;
+const emailTest2 = process.env.emailTest2;
+
 export const contactData = {
   validContacts: {
     userContactInformation: {
-      email: 'thisisatest@test.com',
-      mobileNumber: '+4612333657',
+      email: emailTest1,
+      mobileNumber: mobileNumberTest1,
     },
   },
 
   resetContacts: {
     userContactInformation: {
-      email: 'hellomyfriend@test.com',
-      mobileNumber: '+4688888888',
+      email: emailTest2,
+      mobileNumber: mobileNumberTest2,
     },
   },
   incorrectContactType: {
