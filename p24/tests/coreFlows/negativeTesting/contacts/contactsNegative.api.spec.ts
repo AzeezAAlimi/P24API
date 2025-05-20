@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
 import { headers } from '../../../../utils/requestHeaders';
 import { contactData } from '../../../../data/contactsData';
+import { loginData } from '../../../../data/loginData';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const personalId = process.env.PERSONALID;
 let authToken: string;
 let pid: string;
 
@@ -16,12 +16,7 @@ test.describe('Negative Testing - Contacts', () => {
         headers: {
           ...headers,
         },
-        data: {
-          surname: 'Hansson',
-          givenName: 'Alex',
-          nationalPersonalId: personalId,
-          personalIdType: 'SWEDISH_PERSONAL_IDENTITY_NUMBER',
-        },
+        data: loginData.validlogin,
       });
       expect(response.status()).toBe(200);
       const body = await response.json();

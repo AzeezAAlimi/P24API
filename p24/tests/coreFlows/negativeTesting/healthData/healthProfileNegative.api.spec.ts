@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { headers } from '../../../../utils/requestHeaders';
+import { loginData } from '../../../../data/loginData';
 import { healthProfileData } from '../../../../data/healthProfileData';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -16,12 +17,7 @@ test.describe('Negative Testing - Health Profile', () => {
         headers: {
           ...headers,
         },
-        data: {
-          surname: 'Hansson',
-          givenName: 'Alex',
-          nationalPersonalId: personalId,
-          personalIdType: 'SWEDISH_PERSONAL_IDENTITY_NUMBER',
-        },
+        data: loginData.validlogin,
       });
       expect(response.status()).toBe(200);
       const body = await response.json();
@@ -34,6 +30,7 @@ test.describe('Negative Testing - Health Profile', () => {
   }) => {
     const response = await request.get('/api/directory2/v1/users/me', {
       headers: {
+        Authorization: `Bearer ${authToken}`,
         ...headers,
       },
     });

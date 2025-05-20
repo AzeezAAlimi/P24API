@@ -8,7 +8,6 @@ import { loginData } from '../../../../data/loginData';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const personalId = process.env.PERSONALID;
 const mobileNumberTest1 = process.env.MOBILENUMBERTEST1;
 const mobileNumberTest2 = process.env.MOBILENUMBERTEST2;
 const emailTest1 = process.env.EMAILTEST1;
