@@ -1,8 +1,10 @@
 import { test, expect } from '@playwright/test';
+import { headers } from '../../../../utils/requestHeaders';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import { myContactsSchema } from '../../../../schemas/myContacts.schema';
 import { contactData } from '../../../../data/myContactsData';
+import { loginData } from '../../../../data/loginData';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -17,33 +19,29 @@ addFormats(ajv);
 let authToken: string;
 let pid: string;
 
-test.describe('Positive Testing - Update my Contacts', () => {
-  test.beforeAll('POST Login', async ({ request }) => {
-    const response = await request.post('/api/test/login', {
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        'X-Origin': 'doktor24',
-        'Content-Type': 'application/json',
-      },
-      data: {
-        surname: 'Hansson',
-        givenName: 'Alex',
-        nationalPersonalId: personalId,
-        personalIdType: 'SWEDISH_PERSONAL_IDENTITY_NUMBER',
-      },
-    });
-    expect(response.status()).toBe(200);
-    const body = await response.json();
-    authToken = body.token;
-  });
+test.describe('Positive Testing - Contacts', () => {
+  test.beforeAll(
+    'POST /login - valid credentials - 200 + token',
+    async ({ request }) => {
+      const response = await request.post('/api/test/login', {
+        headers: {
+          ...headers,
+        },
+        data: loginData.validlogin,
+      });
+      expect(response.status()).toBe(200);
+      const body = await response.json();
+      authToken = body.token;
+    },
+  );
 
-  test('GET User details', async ({ request }) => {
+  test('GET /users/me - valid token - 200 + patient data', async ({
+    request,
+  }) => {
     const response = await request.get('/api/directory2/v1/users/me', {
       headers: {
         Authorization: `Bearer ${authToken}`,
-        Accept: 'application/json, text/plain, */*',
-        'X-Origin': 'doktor24',
-        'Content-Type': 'application/json',
+        ...headers,
       },
     });
     expect(response.status()).toBe(200);
@@ -51,13 +49,13 @@ test.describe('Positive Testing - Update my Contacts', () => {
     pid = body.patient.id;
   });
 
-  test('Validate my contact schema', async ({ request }) => {
+  test('POST /users/me/profile - Validate response schema - 200', async ({
+    request,
+  }) => {
     const response = await request.get('/api/directory2/v1/users/me/profile', {
       headers: {
         Authorization: `Bearer ${authToken}`,
-        Accept: 'application/json, text/plain, */*',
-        'X-Origin': 'doktor24',
-        'Content-Type': 'application/json',
+        ...headers,
       },
     });
     expect(response.status()).toBe(200);
@@ -67,13 +65,13 @@ test.describe('Positive Testing - Update my Contacts', () => {
     expect(valid).toBe(true);
   });
 
-  test('PUT Update contact details', async ({ request }) => {
+  test('PUT /users/me/profile - Update contact details - 200', async ({
+    request,
+  }) => {
     const response = await request.put('/api/directory2/v1/users/me/profile', {
       headers: {
         Authorization: `Bearer ${authToken}`,
-        Accept: 'application/json, text/plain, */*',
-        'X-Origin': 'doktor24',
-        'Content-Type': 'application/json',
+        ...headers,
       },
       data: contactData.validContacts,
     });
@@ -86,13 +84,13 @@ test.describe('Positive Testing - Update my Contacts', () => {
     );
   });
 
-  test('PUT Reset contact details', async ({ request }) => {
+  test('PUT /users/me/profile - Reset contact details - 200', async ({
+    request,
+  }) => {
     const response = await request.put('/api/directory2/v1/users/me/profile', {
       headers: {
         Authorization: `Bearer ${authToken}`,
-        Accept: 'application/json, text/plain, */*',
-        'X-Origin': 'doktor24',
-        'Content-Type': 'application/json',
+        ...headers,
       },
       data: contactData.resetContacts,
     });

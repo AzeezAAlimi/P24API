@@ -1,4 +1,6 @@
 import { test, expect } from '@playwright/test';
+import { headers } from '../../utils/requestHeaders';
+import { loginData } from '../../data/loginData';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -10,62 +12,57 @@ let appoinmentId: string;
 let refId: string;
 
 test.describe('Seek care E2E', () => {
-  test('POST Login', async ({ request }) => {
+  test('POST /login - valid credentials - 200 + token', async ({ request }) => {
     const response = await request.post('/api/test/login', {
       headers: {
-        Accept: 'application/json, text/plain, */*',
-        'X-Origin': 'doktor24',
-        'Content-Type': 'application/json',
+        ...headers,
       },
-      data: {
-        surname: 'Hansson',
-        givenName: 'Alex',
-        nationalPersonalId: personalId,
-        personalIdType: 'SWEDISH_PERSONAL_IDENTITY_NUMBER',
-      },
+      data: loginData.validlogin,
     });
     expect(response.status()).toBe(200);
     const body = await response.json();
     authToken = body.token;
   });
 
-  test('GET User details', async ({ request }) => {
+  test('GET /users/me/current-patient - fetch patient ID - 200', async ({
+    request,
+  }) => {
     const response = await request.get(
       '/api/directory2/v1/users/me/current-patient',
       {
         headers: {
           Authorization: `Bearer ${authToken}`,
-          Accept: 'application/json, text/plain, */*',
-          'X-Origin': 'doktor24',
-          'Content-Type': 'application/json',
+          ...headers,
         },
       },
     );
+    expect(response.status()).toBe(200);
     const body = await response.json();
     pid = body.id;
     console.log(body);
   });
 
-  test('GET My activites', async ({ request }) => {
+  test('GET /activities - fetch patient activities - 200', async ({
+    request,
+  }) => {
     const response = await request.get('/api/front-door/v1/activities', {
       headers: {
         Authorization: `Bearer ${authToken}`,
-        Accept: 'application/json, text/plain, */*',
-        'X-Origin': 'doktor24',
-        'Content-Type': 'application/json',
+        ...headers,
       },
     });
+    expect(response.status()).toBe(200);
     const body = await response.json();
     console.log(body);
   });
 
-  test('POST Initiate appointment request', async ({ request }) => {
+  test('POST /actions - initiate appointment - 200 + appointmentId', async ({
+    request,
+  }) => {
     const response = await request.post('/api/actions', {
       headers: {
         Authorization: `Bearer ${authToken}`,
-        Accept: 'application/json, text/plain, */*',
-        'X-Origin': 'doktor24',
-        'Content-Type': 'application/json',
+        ...headers,
       },
       data: {
         searchTermId: 'cough',
@@ -74,36 +71,38 @@ test.describe('Seek care E2E', () => {
         patientId: `${pid}`,
       },
     });
+    expect(response.status()).toBe(200);
     const body = await response.json();
     console.log(body);
     appoinmentId = body.id;
   });
 
-  test('POST Activate appointment request', async ({ request }) => {
+  test('POST /actions/{appointmentId}/execute/v2 - activate appointment - 200 + refId', async ({
+    request,
+  }) => {
     const response = await request.post(
       `/api/actions/${appoinmentId}/execute/v2`,
       {
         headers: {
           Authorization: `Bearer ${authToken}`,
-          Accept: 'application/json, text/plain, */*',
-          'X-Origin': 'doktor24',
-          'Content-Type': 'application/json',
+          ...headers,
         },
         data: { optionId: 'startTriage' },
       },
     );
+    expect(response.status()).toBe(200);
     const body = await response.json();
     console.log(body);
     refId = body.executionResult.referenceId.value;
   });
 
-  test('POST Triage recommendation', async ({ request }) => {
+  test('POST /actions - submit triage recommendation - 200', async ({
+    request,
+  }) => {
     const response = await request.post(`/api/actions`, {
       headers: {
         Authorization: `Bearer ${authToken}`,
-        Accept: 'application/json, text/plain, */*',
-        'X-Origin': 'doktor24',
-        'Content-Type': 'application/json',
+        ...headers,
       },
       data: {
         patientId: `${pid}`,
@@ -112,35 +111,38 @@ test.describe('Seek care E2E', () => {
         isChild: false,
       },
     });
+    expect(response.status()).toBe(200);
     const body = await response.json();
     console.log(body);
   });
 
-  test('GET Verify appointment in My activites', async ({ request }) => {
+  test('GET /activities - verify appointment in list - 200 + match', async ({
+    request,
+  }) => {
     const response = await request.get('/api/front-door/v1/activities', {
       headers: {
         Authorization: `Bearer ${authToken}`,
-        Accept: 'application/json, text/plain, */*',
-        'X-Origin': 'doktor24',
-        'Content-Type': 'application/json',
+        ...headers,
       },
     });
+    expect(response.status()).toBe(200);
     const body = await response.json();
     const match = body.ongoing.find((a) => a.referenceId?.value === refId);
     console.log('Found activity:', match);
   });
 
-  test('DELETE ongoing appointment', async ({ request }) => {
+  test('DELETE /appointments/{refId} - cancel appointment - 200', async ({
+    request,
+  }) => {
     const response = await request.delete(
       `/api/healthmanager/v1/appointments/${refId}`,
       {
         headers: {
           Authorization: `Bearer ${authToken}`,
-          Accept: 'application/json, text/plain, */*',
-          'X-Origin': 'doktor24',
-          'Content-Type': 'application/json',
+          ...headers,
         },
       },
     );
+    expect(response.status()).toBe(200);
   });
 });

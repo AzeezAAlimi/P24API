@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { headers } from '../../../../utils/requestHeaders';
 import { healthProfileData } from '../../../../data/healthProfileData';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -8,32 +9,32 @@ let authToken: string;
 let pid: string;
 
 test.describe('Negative Testing - Health Profile', () => {
-  test.beforeAll('POST Login', async ({ request }) => {
-    const response = await request.post('/api/test/login', {
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        'X-Origin': 'doktor24',
-        'Content-Type': 'application/json',
-      },
-      data: {
-        surname: 'Hansson',
-        givenName: 'Alex',
-        nationalPersonalId: personalId,
-        personalIdType: 'SWEDISH_PERSONAL_IDENTITY_NUMBER',
-      },
-    });
-    expect(response.status()).toBe(200);
-    const body = await response.json();
-    authToken = body.token;
-  });
+  test.beforeAll(
+    'POST /login - valid credentials - 200 + token',
+    async ({ request }) => {
+      const response = await request.post('/api/test/login', {
+        headers: {
+          ...headers,
+        },
+        data: {
+          surname: 'Hansson',
+          givenName: 'Alex',
+          nationalPersonalId: personalId,
+          personalIdType: 'SWEDISH_PERSONAL_IDENTITY_NUMBER',
+        },
+      });
+      expect(response.status()).toBe(200);
+      const body = await response.json();
+      authToken = body.token;
+    },
+  );
 
-  test('GET User details', async ({ request }) => {
+  test('GET /users/me - valid token - 200 + patient data', async ({
+    request,
+  }) => {
     const response = await request.get('/api/directory2/v1/users/me', {
       headers: {
-        Authorization: `Bearer ${authToken}`,
-        Accept: 'application/json, text/plain, */*',
-        'X-Origin': 'doktor24',
-        'Content-Type': 'application/json',
+        ...headers,
       },
     });
     expect(response.status()).toBe(200);
@@ -41,22 +42,22 @@ test.describe('Negative Testing - Health Profile', () => {
     pid = body.patient.id;
   });
 
-  test('Get Health Profile - Invalid patient id', async ({ request }) => {
+  test('GET /healthprofiles/:id - invalid patient ID - 403', async ({
+    request,
+  }) => {
     const response = await request.get(
       `/api/healthmanager/v1/healthprofiles/3456667`,
       {
         headers: {
           Authorization: `Bearer ${authToken}`,
-          Accept: 'application/json, text/plain, */*',
-          'X-Origin': 'doktor24',
-          'Content-Type': 'application/json',
+          ...headers,
         },
       },
     );
     expect(response.status()).toBe(403);
   });
 
-  test('PUT Health Profile - Exceeding height and weight limit', async ({
+  test('PUT /healthprofiles/:id - height/weight too large - 400', async ({
     request,
   }) => {
     const response = await request.put(
@@ -64,9 +65,7 @@ test.describe('Negative Testing - Health Profile', () => {
       {
         headers: {
           Authorization: `Bearer ${authToken}`,
-          Accept: 'application/json, text/plain, */*',
-          'X-Origin': 'doktor24',
-          'Content-Type': 'application/json',
+          ...headers,
         },
         data: healthProfileData.overLimitHealthProfile,
       },
@@ -74,7 +73,7 @@ test.describe('Negative Testing - Health Profile', () => {
     expect(response.status()).toBe(400);
   });
 
-  test('PUT Health Profile - Sending unsupported fields', async ({
+  test('PUT /healthprofiles/:id - unsupported fields - 400', async ({
     request,
   }) => {
     const response = await request.put(
@@ -82,9 +81,7 @@ test.describe('Negative Testing - Health Profile', () => {
       {
         headers: {
           Authorization: `Bearer ${authToken}`,
-          Accept: 'application/json, text/plain, */*',
-          'X-Origin': 'doktor24',
-          'Content-Type': 'application/json',
+          ...headers,
         },
         data: healthProfileData.stringInsteadOfNumber,
       },
@@ -92,13 +89,11 @@ test.describe('Negative Testing - Health Profile', () => {
     expect(response.status()).toBe(400);
   });
 
-  test('Get Health Profile - Invalid URL', async ({ request }) => {
+  test('GET /healthmanager/9/hea - invalid URL - 404', async ({ request }) => {
     const response = await request.get(`/api/healthmanager/9/hea`, {
       headers: {
         Authorization: `Bearer ${authToken}`,
-        Accept: 'application/json, text/plain, */*',
-        'X-Origin': 'doktor24',
-        'Content-Type': 'application/json',
+        ...headers,
       },
     });
     expect(response.status()).toBe(404);

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { headers } from '../../../../utils/requestHeaders';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import { loginSchema } from '../../../../schemas/login.schema';
@@ -8,12 +9,12 @@ const ajv = new Ajv();
 addFormats(ajv);
 
 test.describe('Positive Testing - Login', () => {
-  test('Validate Login schema', async ({ request }) => {
+  test('POST /api/test/login - Validate response schema - 200', async ({
+    request,
+  }) => {
     const response = await request.post('/api/test/login', {
       headers: {
-        Accept: 'application/json, text/plain, */*',
-        'X-Origin': 'doktor24',
-        'Content-Type': 'application/json',
+        ...headers,
       },
       data: loginData.validlogin,
     });
@@ -24,12 +25,10 @@ test.describe('Positive Testing - Login', () => {
     expect(valid).toBe(true);
   });
 
-  test('POST Login', async ({ request }) => {
+  test('POST /login - valid credentials - 200 + token', async ({ request }) => {
     const response = await request.post('/api/test/login', {
       headers: {
-        Accept: 'application/json, text/plain, */*',
-        'X-Origin': 'doktor24',
-        'Content-Type': 'application/json',
+        ...headers,
       },
       data: loginData.validlogin,
     });

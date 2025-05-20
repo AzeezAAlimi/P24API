@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
+import { headers } from '../../utils/requestHeaders';
 import { healthProfileDataSet } from '../../data/healthProfileData';
+import { loginData } from '../../data/loginData';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -11,16 +13,9 @@ test.describe('Data-Driven Testing - Health Profile', () => {
   test.beforeAll(async ({ request }) => {
     const loginResponse = await request.post('/api/test/login', {
       headers: {
-        'X-Origin': 'doktor24',
-        'Content-Type': 'application/json',
-        Accept: 'application/json, text/plain, */*',
+        ...headers,
       },
-      data: {
-        surname: 'Hansson',
-        givenName: 'Alex',
-        nationalPersonalId: personalId,
-        personalIdType: 'SWEDISH_PERSONAL_IDENTITY_NUMBER',
-      },
+      data: loginData.validlogin,
     });
     const body = await loginResponse.json();
     authToken = body.token;
@@ -28,9 +23,7 @@ test.describe('Data-Driven Testing - Health Profile', () => {
     const userResponse = await request.get('/api/directory2/v1/users/me', {
       headers: {
         Authorization: `Bearer ${authToken}`,
-        'X-Origin': 'doktor24',
-        'Content-Type': 'application/json',
-        Accept: 'application/json, text/plain, */*',
+        ...headers,
       },
     });
     const userBody = await userResponse.json();
@@ -44,9 +37,7 @@ test.describe('Data-Driven Testing - Health Profile', () => {
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
-            'X-Origin': 'doktor24',
-            'Content-Type': 'application/json',
-            Accept: 'application/json, text/plain, */*',
+            ...headers,
           },
           data,
         },

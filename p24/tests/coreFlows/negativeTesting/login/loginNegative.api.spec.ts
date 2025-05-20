@@ -1,25 +1,22 @@
 import { test, expect } from '@playwright/test';
+import { headers } from '../../../../utils/requestHeaders';
 import { loginData } from '../../../../data/loginData';
 
-test.describe('Positive Testing - login', () => {
-  test('Negative - POST Login - Invalid login', async ({ request }) => {
+test.describe('Negative Testing - Login', () => {
+  test('POST /test/login - invalid credentials - 500', async ({ request }) => {
     const response = await request.post('/api/test/login', {
       headers: {
-        Accept: 'application/json, text/plain, */*',
-        'X-Origin': 'doktor24',
-        'Content-Type': 'application/json',
+        ...headers,
       },
       data: loginData.invalidlogin,
     });
     expect(response.status()).toBe(500);
   });
 
-  test('Negative - POST Login - Empty login', async ({ request }) => {
+  test('POST /test/login - empty payload - 400', async ({ request }) => {
     const response = await request.post('/api/test/login', {
       headers: {
-        Accept: 'application/json, text/plain, */*',
-        'X-Origin': 'doktor24',
-        'Content-Type': 'application/json',
+        ...headers,
       },
       data: loginData.emptyLogin,
     });
