@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-const personalId = process.env.personalId;
+const personalId = process.env.PERSONALID;
 
 export const loginData = {
   validlogin: {

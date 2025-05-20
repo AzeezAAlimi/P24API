@@ -2,8 +2,8 @@ import { test, expect } from '@playwright/test';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const personalId = process.env.personalId;
-const triageInterviewId = process.env.triageInterviewId;
+const personalId = process.env.PERSONALID;
+const triageInterviewId = process.env.TRIAGEINTERVIEWID;
 let authToken: string;
 let pid: string;
 let appoinmentId: string;

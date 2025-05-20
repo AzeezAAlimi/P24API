@@ -1,9 +1,9 @@
 import dotenv from 'dotenv';
 dotenv.config();
-const mobileNumberTest1 = process.env.mobileNumberTest1;
-const mobileNumberTest2 = process.env.mobileNumberTest2;
-const emailTest1 = process.env.emailTest1;
-const emailTest2 = process.env.emailTest2;
+const mobileNumberTest1 = process.env.MOBILENUMBERTEST1;
+const mobileNumberTest2 = process.env.MOBILENUMBERTEST2;
+const emailTest1 = process.env.EMAILTEST1;
+const emailTest2 = process.env.EMAILTEST2;
 
 export const contactData = {
   validContacts: {

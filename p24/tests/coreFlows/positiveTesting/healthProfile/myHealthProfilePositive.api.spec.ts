@@ -6,8 +6,8 @@ import { healthProfileData } from '../../../../data/healthProfileData';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const personalId = process.env.personalId;
-const personExternalId = process.env.personExternalId;
+const personalId = process.env.PERSONALID;
+const personExternalId = process.env.PERSONEXTERNALID;
 const ajv = new Ajv();
 addFormats(ajv);
 

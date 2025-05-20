@@ -3,7 +3,7 @@ import { contactData } from '../../../../data/myContactsData';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const personalId = process.env.personalId;
+const personalId = process.env.PERSONALID;
 let authToken: string;
 let pid: string;
 
