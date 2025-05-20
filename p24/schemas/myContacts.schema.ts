@@ -1,0 +1,53 @@
+export const myContactsSchema = {
+  type: 'object',
+  properties: {
+    userProfile: {
+      type: 'object',
+      properties: {
+        userId: { type: 'string', format: 'uuid' },
+        username: { type: 'string' },
+        givenName: { type: 'string' },
+        surname: { type: 'string' },
+        mobileNumber: { type: 'string' },
+        email: { type: 'string', format: 'email' },
+        preferredLanguage: { type: 'string' },
+      },
+      required: [
+        'userId',
+        'username',
+        'givenName',
+        'surname',
+        'mobileNumber',
+        'email',
+        'preferredLanguage',
+      ],
+      additionalProperties: false,
+    },
+    oneselfPatientProfile: {
+      type: 'object',
+      properties: {
+        patientId: { type: 'string', format: 'uuid' },
+        age: { type: 'number' },
+        birthDate: { type: 'string', format: 'date' },
+        gender: { type: 'string' },
+        givenName: { type: 'string' },
+        surname: { type: 'string' },
+        secrecy: { type: 'string' },
+        insuranceInformation: { type: ['object', 'null'] },
+      },
+      required: [
+        'patientId',
+        'age',
+        'birthDate',
+        'gender',
+        'givenName',
+        'surname',
+        'secrecy',
+        'insuranceInformation',
+      ],
+      additionalProperties: false,
+    },
+  },
+  required: ['userProfile', 'oneselfPatientProfile'],
+  additionalProperties: false,
+};
