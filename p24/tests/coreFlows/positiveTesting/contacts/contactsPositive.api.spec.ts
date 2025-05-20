@@ -3,7 +3,7 @@ import { headers } from '../../../../utils/requestHeaders';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import { myContactsSchema } from '../../../../schemas/myContacts.schema';
-import { contactData } from '../../../../data/myContactsData';
+import { contactData } from '../../../../data/contactsData';
 import { loginData } from '../../../../data/loginData';
 import dotenv from 'dotenv';
 dotenv.config();

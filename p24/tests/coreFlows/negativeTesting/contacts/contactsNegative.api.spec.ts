@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { headers } from '../../../../utils/requestHeaders';
-import { contactData } from '../../../../data/myContactsData';
+import { contactData } from '../../../../data/contactsData';
 import dotenv from 'dotenv';
 dotenv.config();
 
