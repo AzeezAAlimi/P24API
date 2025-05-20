@@ -11,7 +11,6 @@ for (const { testName, data, expectedStatus } of loginDataSet) {
       },
       data,
     });
-
     expect(loginResponse.status()).toBe(expectedStatus);
   });
 }

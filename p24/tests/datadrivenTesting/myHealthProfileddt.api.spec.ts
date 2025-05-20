@@ -51,7 +51,6 @@ test.describe('Data-Driven Testing - Health Profile', () => {
           data,
         },
       );
-
       expect(response.status()).toBe(expectedStatus);
     });
   }

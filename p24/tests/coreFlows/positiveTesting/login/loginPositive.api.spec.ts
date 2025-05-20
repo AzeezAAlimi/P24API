@@ -17,6 +17,7 @@ test.describe('Positive Testing - Login', () => {
       },
       data: loginData.validlogin,
     });
+    expect(response.status()).toBe(200);
     const body = await response.json();
     const validate = ajv.compile(loginSchema);
     const valid = validate(body);

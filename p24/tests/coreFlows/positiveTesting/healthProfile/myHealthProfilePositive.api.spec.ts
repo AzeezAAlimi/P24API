@@ -62,6 +62,7 @@ test.describe('Positive Testing - Health Profile', () => {
         },
       },
     );
+    expect(response.status()).toBe(200);
     const body = await response.json();
     const validate = ajv.compile(healthProfileSchema);
     const valid = validate(body);

@@ -32,6 +32,7 @@ test.describe('Positive Testing - Update my Contacts', () => {
         personalIdType: 'SWEDISH_PERSONAL_IDENTITY_NUMBER',
       },
     });
+    expect(response.status()).toBe(200);
     const body = await response.json();
     authToken = body.token;
   });
@@ -45,6 +46,7 @@ test.describe('Positive Testing - Update my Contacts', () => {
         'Content-Type': 'application/json',
       },
     });
+    expect(response.status()).toBe(200);
     const body = await response.json();
     pid = body.patient.id;
   });
@@ -58,6 +60,7 @@ test.describe('Positive Testing - Update my Contacts', () => {
         'Content-Type': 'application/json',
       },
     });
+    expect(response.status()).toBe(200);
     const body = await response.json();
     const validate = ajv.compile(myContactsSchema);
     const valid = validate(body);

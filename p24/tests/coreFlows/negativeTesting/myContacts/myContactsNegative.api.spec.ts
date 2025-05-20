@@ -22,6 +22,7 @@ test.describe('Negative Testing - Update my Contacts', () => {
         personalIdType: 'SWEDISH_PERSONAL_IDENTITY_NUMBER',
       },
     });
+    expect(response.status()).toBe(200);
     const body = await response.json();
     authToken = body.token;
   });
@@ -35,6 +36,7 @@ test.describe('Negative Testing - Update my Contacts', () => {
         'Content-Type': 'application/json',
       },
     });
+    expect(response.status()).toBe(200);
     const body = await response.json();
     pid = body.patient.id;
   });

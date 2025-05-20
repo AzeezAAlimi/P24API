@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       EXPIRED_AUTH_TOKEN: ${{ secrets.EXPIRED_AUTH_TOKEN }}
-      MALFORMED_TOKEN : ${{ secrets.MALFORMED_TOKEN}}
+      MALFORMED_TOKEN: ${{ secrets.MALFORMED_TOKEN}}
       PERSONALID: ${{ secrets.PERSONALID}}
       MOBILENUMBERTEST1: ${{ secrets.MOBILENUMBERTEST1}}
       MOBILENUMBERTEST2: ${{ secrets.MOBILENUMBERTEST2}}
