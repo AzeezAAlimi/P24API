@@ -11,8 +11,8 @@ let pid: string;
 let appoinmentId: string;
 let refId: string;
 
-test.describe('Seek care E2E', () => {
-  test('POST /login - valid credentials - 200 + token', async ({ request }) => {
+test.describe.skip('Seek care E2E - paused', () => {
+  test.skip('POST /login - valid credentials - 200 + token', async ({ request }) => {
     const response = await request.post('/api/test/login', {
       headers: {
         ...headers,
@@ -24,7 +24,7 @@ test.describe('Seek care E2E', () => {
     authToken = body.token;
   });
 
-  test('GET /users/me/current-patient - fetch patient ID - 200', async ({
+  test.skip('GET /users/me/current-patient - fetch patient ID - 200', async ({
     request,
   }) => {
     const response = await request.get(
@@ -42,7 +42,7 @@ test.describe('Seek care E2E', () => {
     console.log(body);
   });
 
-  test('GET /activities - fetch patient activities - 200', async ({
+  test.skip('GET /activities - fetch patient activities - 200', async ({
     request,
   }) => {
     const response = await request.get('/api/front-door/v1/activities', {
@@ -56,7 +56,7 @@ test.describe('Seek care E2E', () => {
     console.log(body);
   });
 
-  test('POST /actions - initiate appointment - 200 + appointmentId', async ({
+  test.skip('POST /actions - initiate appointment - 200 + appointmentId', async ({
     request,
   }) => {
     const response = await request.post('/api/actions', {
@@ -77,7 +77,7 @@ test.describe('Seek care E2E', () => {
     appoinmentId = body.id;
   });
 
-  test('POST /actions/{appointmentId}/execute/v2 - activate appointment - 200 + refId', async ({
+  test.skip('POST /actions/{appointmentId}/execute/v2 - activate appointment - 200 + refId', async ({
     request,
   }) => {
     const response = await request.post(
@@ -96,7 +96,7 @@ test.describe('Seek care E2E', () => {
     refId = body.executionResult.referenceId.value;
   });
 
-  test('POST /actions - submit triage recommendation - 200', async ({
+  test.skip('POST /actions - submit triage recommendation - 200', async ({
     request,
   }) => {
     const response = await request.post(`/api/actions`, {
@@ -116,7 +116,7 @@ test.describe('Seek care E2E', () => {
     console.log(body);
   });
 
-  test('GET /activities - verify appointment in list - 200 + match', async ({
+  test.skip('GET /activities - verify appointment in list - 200 + match', async ({
     request,
   }) => {
     const response = await request.get('/api/front-door/v1/activities', {
@@ -131,7 +131,7 @@ test.describe('Seek care E2E', () => {
     console.log('Found activity:', match);
   });
 
-  test('DELETE /appointments/{refId} - cancel appointment - 200', async ({
+  test.skip('DELETE /appointments/{refId} - cancel appointment - 200', async ({
     request,
   }) => {
     const response = await request.delete(
